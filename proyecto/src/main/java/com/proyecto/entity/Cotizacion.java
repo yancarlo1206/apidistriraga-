@@ -31,7 +31,7 @@ public class Cotizacion {
 	@NotNull(message = "debe haber referencia de cliente en este campo")
 	@ManyToOne
 	@JoinColumn(name = "cliente", referencedColumnName ="id")
-	private Usuario usuario;
+	private Cliente cliente;
 	
 	@NotNull(message = "debe haber referencia de apartamento en este campo")
 	@ManyToOne

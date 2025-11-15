@@ -1,13 +1,12 @@
 package com.proyecto.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import com.proyecto.entity.Apartamento;
+import com.proyecto.entity.Cotizacion;
 import com.proyecto.repository.CotizacionRepository;
 import com.proyecto.service.ApartamentoService.ResourceNotFoundException;
 
@@ -19,30 +18,36 @@ public class CotizacionService {
 	private CotizacionRepository cotizacionRepository;
 	
 	
-	public Apartamento insertar(Apartamento request) {
+	public Cotizacion insertar(Cotizacion request) {
 
-		Apartamento nuevo = new Apartamento();
-
-		nuevo.setEdificio(request.getEdificio());
-		nuevo.setNombre(request.getNombre());
+		Cotizacion nuevo = new Cotizacion();
+		
+		nuevo.setFecha(LocalDateTime.now());
 		nuevo.setPrecio(request.getPrecio());
+		nuevo.setCliente(request.getCliente());
+		nuevo.setApartamento(request.getApartamento());
+		nuevo.setPrecio(request.getPrecio());
+		nuevo.setTipo(request.getTipo());
 		nuevo.setObservacion(request.getObservacion());
 		nuevo.setEstado(request.getEstado());
-		return apartamentoRepository.save(nuevo);
+		return cotizacionRepository.save(nuevo);
 
 	}
 
-	public Apartamento guardar(Integer id, Apartamento request) {
-		Optional<Apartamento> apartamento = apartamentoRepository.findById(id);
+	public Cotizacion guardar(Integer id, Cotizacion request) {
+		Optional<Cotizacion> cotizacion = cotizacionRepository.findById(id);
 
-		if (apartamento.isPresent()) {
-			Apartamento nuevo = apartamento.get();
-			nuevo.setEdificio(request.getEdificio());
-			nuevo.setNombre(request.getNombre());
+		if (cotizacion.isPresent()) {
+			Cotizacion nuevo = cotizacion.get();
+			nuevo.setFecha(LocalDateTime.now());
 			nuevo.setPrecio(request.getPrecio());
+			nuevo.setCliente(request.getCliente());
+			nuevo.setApartamento(request.getApartamento());
+			nuevo.setPrecio(request.getPrecio());
+			nuevo.setTipo(request.getTipo());
 			nuevo.setObservacion(request.getObservacion());
 			nuevo.setEstado(request.getEstado());
-			return apartamentoRepository.save(nuevo);
+			return cotizacionRepository.save(nuevo);
 		} else {
 
 			return null;
@@ -50,15 +55,15 @@ public class CotizacionService {
 
 	}
 
-	public List<Apartamento> listar() {
+	public List<Cotizacion> listar() {
 
-		return apartamentoRepository.findAll();
+		return cotizacionRepository.findAll();
 
 	}
 
-	public Apartamento listarUno(Integer id) {
-		return apartamentoRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Apartamento no encontrado con ID: " + id));
+	public Cotizacion listarUno(Integer id) {
+		return cotizacionRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Cotizacion no encontrada con ID: " + id));
 	}
 
 	@ResponseStatus()
@@ -69,8 +74,8 @@ public class CotizacionService {
 	}
 
 	public boolean eliminar(Integer id) {
-		if (apartamentoRepository.existsById(id)) {
-			apartamentoRepository.deleteById(id);
+		if (cotizacionRepository.existsById(id)) {
+			cotizacionRepository.deleteById(id);
 			return true;
 		}
 		return false;
