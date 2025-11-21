@@ -1,4 +1,5 @@
 package com.proyecto.entity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,24 +21,23 @@ public class Usuario {
 	
 	@Id
 	@Column
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Integer id;
 	
+	@NotBlank(message = "El username es obligatorio")
+	private String username;
+	
+	@Email(message = "El formato de email no es correcto")
 	@NotBlank(message = "El correo es obligatorio")
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
 	private String correo;
 	
-	@NotBlank(message = "la contraseña es obligatoria")
-	@Size(min = 2, max = 20, message = "Maximo 20 caracteres")
-	private String contrasena;
+	@NotBlank(message = "El password es obligatorio")
+	private String password;
 	
-	@NotNull(message = "tipo no puede estar vacia")
-	@ManyToOne
-	@JoinColumn(name = "tipo", referencedColumnName ="id")
-	private UsuarioTipo tipo;
+
+    @ManyToOne
+    @JoinColumn(name = "UsuarioTipo", referencedColumnName = "id")
+    private UsuarioTipo usuario_tipo;
 	
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
-	private String observacion;
 	
-	private Integer estado;
 }

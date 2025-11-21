@@ -3,9 +3,13 @@ package com.proyecto.service;
 import java.util.List;
 import java.util.Optional;
 import com.proyecto.repository.UsuarioRepository;
+import com.proyecto.repository.UsuarioTipoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.proyecto.entity.UsuarioTipo;
 import com.proyecto.entity.Usuario;
 
 @Service
@@ -13,36 +17,31 @@ public class UsuarioService {
 
 	@Autowired
     private  UsuarioRepository usuarioRepository;
-
+    
+	@Autowired
+	private UsuarioTipoRepository usuarioTipoRepository;
 	
 	public Usuario insertar(Usuario request) {
 
-		Usuario nuevo = new Usuario();
+		UsuarioTipo usuario_tipo = usuarioTipoRepository.findById(request.getUsuario_tipo().getId())
+				.orElseThrow(() -> new RuntimeException( "Tipo de usuario no encontrado con ID: " + request.getUsuario_tipo().getId()));
 
-		nuevo.setCorreo(request.getCorreo());
-		nuevo.setContrasena(request.getContrasena());
-		nuevo.setTipo(request.getTipo());
-		nuevo.setObservacion(request.getObservacion());
-		nuevo.setEstado(request.getEstado());
-		return usuarioRepository.save(nuevo);
+		request.setUsuario_tipo(usuario_tipo);
 
+		return usuarioRepository.save(request);
 	}
 
 	public Usuario guardar(Integer id, Usuario request) {
-		Optional<Usuario> usuario = usuarioRepository.findById(id);
+		Usuario actual = usuarioRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
 
-		if (usuario.isPresent()) {
-			Usuario nuevo = usuario.get();
-			nuevo.setCorreo(request.getCorreo());
-			nuevo.setContrasena(request.getContrasena());
-			nuevo.setTipo(request.getTipo());
-			nuevo.setObservacion(request.getObservacion());
-			nuevo.setEstado(request.getEstado());
-			return usuarioRepository.save(nuevo);
-		} else {
+		UsuarioTipo usuario_tipo = usuarioTipoRepository.findById(request.getUsuario_tipo().getId())
+				.orElseThrow(() -> new RuntimeException("Tipo de usuario no encontrado con ID: " + request.getUsuario_tipo().getId()));
 
-			return null;
-		}
+		actual.setUsuario_tipo(usuario_tipo);
+		actual.setCorreo(request.getCorreo());
+
+		return usuarioRepository.save(actual);
 
 	}
 
