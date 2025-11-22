@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -57,6 +58,7 @@ public class Edificio {
 	private Integer estado;
 	
 	@OneToMany(mappedBy = "edificio")
+	@JsonIgnore
     private List<Apartamento> apartamentos;
 	
 	

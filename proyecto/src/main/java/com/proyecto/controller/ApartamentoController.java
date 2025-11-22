@@ -151,7 +151,8 @@ public class ApartamentoController {
 
 	@GetMapping("/listPorEdificio/{edificioId}")
 	public ResponseEntity<Responses<?>> apartamentorPorEdificio(@PathVariable Integer edificioId) {
-
+		
+		
 		try {
 			String nombreEdificio = edificioService.obtenerNombreEdificio(edificioId);
 
