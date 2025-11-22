@@ -40,11 +40,16 @@ public class ApartamentoService {
 	}
 
 	public Apartamento guardar(Integer id, Apartamento request) {
+		
+		Edificio edificio = edificioRepository.findById(request.getEdificio().getId()).orElseThrow(
+				() -> new RuntimeException("Edificio no encontradao con ID: " + request.getEdificio().getId()));
+
+		
 		Optional<Apartamento> apartamento = apartamentoRepository.findById(id);
 
 		if (apartamento.isPresent()) {
 			Apartamento nuevo = apartamento.get();
-			nuevo.setEdificio(request.getEdificio());
+			nuevo.setEdificio(edificio);
 			nuevo.setNombre(request.getNombre());
 			nuevo.setPrecio(request.getPrecio());
 			nuevo.setObservacion(request.getObservacion());

@@ -14,7 +14,7 @@ import com.proyecto.service.UsuarioService.ResourceNotFoundException;
 
 @Service
 public class EdificioService {
-	
+
 	@Autowired
 	private EdificioRepository edificioRepository;
 
@@ -81,5 +81,13 @@ public class EdificioService {
 			return true;
 		}
 		return false;
+	}
+
+	public String obtenerNombreEdificio(Integer edificioId) {
+
+		Edificio edificio = edificioRepository.findById(edificioId)
+				.orElseThrow(() -> new RuntimeException("Edificio no encontrado con ID: " + edificioId));
+
+		return edificio.getNombre();
 	}
 }
