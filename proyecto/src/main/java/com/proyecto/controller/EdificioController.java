@@ -119,13 +119,14 @@ public class EdificioController {
 		}
 
 		@DeleteMapping("/{id}")
-		public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+		public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
 
 			boolean eliminado = edificioService.eliminar(id);
 			if (eliminado) {
-				return ResponseEntity.ok("edificio con ID:" + id + " eliminado correctamente");
+				return ResponseEntity.ok(new Responses<>("Edificio eliminado.", HttpStatus.OK.value(), null));
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("edificio con ID:" + id + "no encontrado");
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+						new Responses<>("Edificio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 			}
 
 		}

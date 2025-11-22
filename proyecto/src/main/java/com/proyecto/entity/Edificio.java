@@ -35,10 +35,10 @@ public class Edificio {
 	@Size(min = 2, max = 50, message = "Maximo 30 caracteres")
 	private String ciudad;
 	
-	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
+	@Size(max = 100, message = "Maximo 30 caracteres")
 	private String ubicacion;
 	
-	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
+	@Size(max = 100, message = "Maximo 30 caracteres")
 	private String administrador;
 	
 	@NotNull
@@ -48,7 +48,7 @@ public class Edificio {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDateTime fecha;
 	
-	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
+	@Size(max = 100, message = "Maximo 30 caracteres")
 	private String observacion;
 	
 	
