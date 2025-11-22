@@ -1,6 +1,7 @@
 package com.proyecto.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -45,7 +47,7 @@ public class Edificio {
 	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
 	private String celular;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime fecha;
 	
 	@Size(max = 100, message = "Maximo 30 caracteres")
@@ -53,6 +55,9 @@ public class Edificio {
 	
 	
 	private Integer estado;
+	
+	@OneToMany(mappedBy = "edificio")
+    private List<Apartamento> apartamentos;
 	
 	
 	

@@ -1,4 +1,6 @@
 package com.proyecto.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,10 +34,11 @@ public class Apartamento {
 	@NotNull(message = "Edificio no puede estar vacia")
 	@ManyToOne
 	@JoinColumn(name = "edificio", referencedColumnName ="id")
+	@JsonIgnore
 	private Edificio edificio;
 	
 	
-	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
+	@Size(max = 100, message = "Maximo 30 caracteres")
 	private String observacion;
 	
 	
