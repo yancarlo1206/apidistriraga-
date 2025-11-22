@@ -21,6 +21,7 @@ import com.proyecto.entity.UsuarioTipo;
 import com.proyecto.repository.UsuarioRepository;
 import com.proyecto.repository.UsuarioTipoRepository;
 import com.proyecto.security.JwtUtil;
+import com.proyecto.service.AuthService;
 import com.proyecto.service.CustomUserService;
 
 @CrossOrigin(origins="http://localhost:3000")
@@ -43,49 +44,29 @@ public class AuthController {
     @Autowired
     private UsuarioTipoRepository usuarioTipoRepository;
     
+    @Autowired
+    private AuthService authService;
+    
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
-
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-
-            final UserDetails userDetails = customUserService.loadUserByUsername(request.getUsername());
-            final String token = jwtUtil.generateToken(userDetails);
-
+            String token = authService.login(request.getUsername(), request.getPassword());
             return ResponseEntity.ok(new AuthResponse(token));
         } catch (Exception e) {
-        	System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
     }
-
    
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            return ResponseEntity.badRequest().body("El nombre de usuario ya existe");
+        try {
+            authService.register(request);
+            return ResponseEntity.ok("Usuario registrado correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        if (userRepository.findByCorreo(request.getCorreo()).isPresent()) {
-            return ResponseEntity.badRequest().body("El correo ya está registrado");
-        }
-
-        UsuarioTipo usuarioTipo = usuarioTipoRepository.findById(request.getUsuarioTipoId())
-                .orElseThrow(() -> new RuntimeException("Tipo de usuario no encontrado"));
-
-        Usuario user = new Usuario();
-        user.setUsername(request.getUsername());
-        user.setCorreo(request.getCorreo());
-        user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
-        user.setUsuario_tipo(usuarioTipo);
-   
-        userRepository.save(user);
-
-        return ResponseEntity.ok("Usuario registrado correctamente");
     }
     
 }
