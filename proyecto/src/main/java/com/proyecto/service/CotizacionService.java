@@ -6,47 +6,93 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.proyecto.entity.Cliente;
+import com.proyecto.entity.Apartamento;
 import com.proyecto.entity.Cotizacion;
+import com.proyecto.entity.CotizacionTipo;
+import com.proyecto.entity.CotizacionEstado;
+import com.proyecto.entity.Edificio;
+import com.proyecto.repository.ApartamentoRepository;
+import com.proyecto.repository.ClienteRepository;
+import com.proyecto.repository.CotizacionEstadoRepository;
 import com.proyecto.repository.CotizacionRepository;
+import com.proyecto.repository.CotizacionTipoRepository;
 import com.proyecto.service.ApartamentoService.ResourceNotFoundException;
 
 @Service
 public class CotizacionService {
 
-	@Autowired
-	
+	@Autowired	
 	private CotizacionRepository cotizacionRepository;
 	
+	@Autowired	
+	private ClienteRepository clienteRepository;
+	
+	@Autowired	
+	private ApartamentoRepository apartamentoRepository;
+	
+	@Autowired	
+	private CotizacionTipoRepository  coTipoRepository;
+	
+	@Autowired	
+	private CotizacionEstadoRepository  coEstadoRepository;
 	
 	public Cotizacion insertar(Cotizacion request) {
+		
+		Cliente cliente = clienteRepository.findById(request.getCliente().getId()).orElseThrow(
+				() -> new RuntimeException("Cliente no encontradao con ID: " + request.getCliente().getId()));
+		
+		Apartamento apartamento = apartamentoRepository.findById(request.getApartamento().getId()).orElseThrow(
+				() -> new RuntimeException("Apartamento no encontradado con ID: " + request.getApartamento().getId()));
+		
+		CotizacionTipo cotipo = coTipoRepository.findById(request.getTipo().getId()).orElseThrow(
+				() -> new RuntimeException("Tipo cotización no encontradado con ID: " + request.getTipo().getId()));
+		
+		CotizacionEstado coestado = coEstadoRepository.findById(request.getEstado().getId()).orElseThrow(
+				() -> new RuntimeException("Estado cotización no encontradado con ID: " + request.getEstado().getId()));
 
 		Cotizacion nuevo = new Cotizacion();
 		
 		nuevo.setFecha(LocalDateTime.now());
 		nuevo.setPrecio(request.getPrecio());
-		nuevo.setCliente(request.getCliente());
-		nuevo.setApartamento(request.getApartamento());
+		nuevo.setCliente(cliente);
+		nuevo.setApartamento(apartamento);
 		nuevo.setPrecio(request.getPrecio());
-		nuevo.setTipo(request.getTipo());
+		nuevo.setTipo(cotipo);
 		nuevo.setObservacion(request.getObservacion());
-		nuevo.setEstado(request.getEstado());
+		nuevo.setEstado(coestado);
 		return cotizacionRepository.save(nuevo);
 
 	}
 
 	public Cotizacion guardar(Integer id, Cotizacion request) {
+		
+		Cliente cliente = clienteRepository.findById(request.getCliente().getId()).orElseThrow(
+				() -> new RuntimeException("Cliente no encontradao con ID: " + request.getCliente().getId()));
+		
+		Apartamento apartamento = apartamentoRepository.findById(request.getApartamento().getId()).orElseThrow(
+				() -> new RuntimeException("Apartamento no encontradado con ID: " + request.getApartamento().getId()));
+		
+		CotizacionTipo cotipo = coTipoRepository.findById(request.getTipo().getId()).orElseThrow(
+				() -> new RuntimeException("Tipo cotización no encontradado con ID: " + request.getTipo().getId()));
+		
+		CotizacionEstado coestado = coEstadoRepository.findById(request.getEstado().getId()).orElseThrow(
+				() -> new RuntimeException("Estado cotización no encontradado con ID: " + request.getEstado().getId()));
+
+		
 		Optional<Cotizacion> cotizacion = cotizacionRepository.findById(id);
 
 		if (cotizacion.isPresent()) {
 			Cotizacion nuevo = cotizacion.get();
 			nuevo.setFecha(LocalDateTime.now());
 			nuevo.setPrecio(request.getPrecio());
-			nuevo.setCliente(request.getCliente());
-			nuevo.setApartamento(request.getApartamento());
+			nuevo.setCliente(cliente);
+			nuevo.setApartamento(apartamento);
 			nuevo.setPrecio(request.getPrecio());
-			nuevo.setTipo(request.getTipo());
+			nuevo.setTipo(cotipo);
 			nuevo.setObservacion(request.getObservacion());
-			nuevo.setEstado(request.getEstado());
+			nuevo.setEstado(coestado);
 			return cotizacionRepository.save(nuevo);
 		} else {
 

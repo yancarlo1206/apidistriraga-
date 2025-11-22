@@ -7,21 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.proyecto.entity.Apartamento;
+import com.proyecto.entity.Edificio;
 import com.proyecto.entity.Espacio;
+import com.proyecto.repository.ApartamentoRepository;
 import com.proyecto.repository.EspacioRepository;
 import com.proyecto.service.ApartamentoService.ResourceNotFoundException;
 
 @Service
 public class EspacioService {
-	
+
 	@Autowired
 	private EspacioRepository espacioRepository;
-	
+
+	@Autowired
+	private ApartamentoRepository apartamentoRepository;
+
 	public Espacio insertar(Espacio request) {
+
+		Apartamento apartamento = apartamentoRepository.findById(request.getApartamento().getId()).orElseThrow(
+				() -> new RuntimeException("Apartamento no encontradado con ID: " + request.getApartamento().getId()));
 
 		Espacio nuevo = new Espacio();
 
-		nuevo.setApartamento(request.getApartamento());
+		nuevo.setApartamento(apartamento);
 		nuevo.setNombre(request.getNombre());
 		nuevo.setObservacion(request.getObservacion());
 		nuevo.setAlto(request.getAlto());
@@ -29,16 +38,20 @@ public class EspacioService {
 		nuevo.setFactor(request.getFactor());
 		nuevo.setPrecio(request.getPrecio());
 		nuevo.setEstado(request.getEstado());
-		return  espacioRepository.save(nuevo);
+		return espacioRepository.save(nuevo);
 
 	}
 
 	public Espacio guardar(Integer id, Espacio request) {
+
+		Apartamento apart = apartamentoRepository.findById(request.getApartamento().getId()).orElseThrow(
+				() -> new RuntimeException("Apartamento no encontradado con ID: " + request.getApartamento().getId()));
+
 		Optional<Espacio> apartamento = espacioRepository.findById(id);
 
 		if (apartamento.isPresent()) {
 			Espacio nuevo = apartamento.get();
-			nuevo.setApartamento(request.getApartamento());
+			nuevo.setApartamento(apart);
 			nuevo.setNombre(request.getNombre());
 			nuevo.setObservacion(request.getObservacion());
 			nuevo.setAlto(request.getAlto());
@@ -46,7 +59,7 @@ public class EspacioService {
 			nuevo.setFactor(request.getFactor());
 			nuevo.setPrecio(request.getPrecio());
 			nuevo.setEstado(request.getEstado());
-			return  espacioRepository.save(nuevo);
+			return espacioRepository.save(nuevo);
 
 		} else {
 

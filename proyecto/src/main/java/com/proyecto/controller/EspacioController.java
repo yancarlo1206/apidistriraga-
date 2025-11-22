@@ -21,15 +21,16 @@ import com.proyecto.response.Responses;
 import com.proyecto.service.EspacioService;
 
 import jakarta.validation.Valid;
-@CrossOrigin(origins="http://localhost:3000")
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/espacio")
 @RestController
 public class EspacioController {
 
 	@Autowired
-	
+
 	private EspacioService espacioService;
-	
+
 	@PostMapping
 	public ResponseEntity<Responses<?>> guardar(@Valid @RequestBody Espacio request, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -76,7 +77,7 @@ public class EspacioController {
 
 		try {
 
-			List<Espacio> espacio =espacioService.listar();
+			List<Espacio> espacio = espacioService.listar();
 
 			if (!espacio.isEmpty()) {
 				mensage = ("lista de espacio");
@@ -104,8 +105,8 @@ public class EspacioController {
 			return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
 		}
 
-		Espacio espacio = espacioService.guardar(id, request);
 		try {
+			Espacio espacio = espacioService.guardar(id, request);
 			String mensage;
 			if (espacio != null) {
 				mensage = ("espacio actualizado");
@@ -127,8 +128,8 @@ public class EspacioController {
 		if (eliminado) {
 			return ResponseEntity.ok(new Responses<>("Espacio eliminado.", HttpStatus.OK.value(), null));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-					new Responses<>("Espacio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Responses<>("Espacio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
 	}
