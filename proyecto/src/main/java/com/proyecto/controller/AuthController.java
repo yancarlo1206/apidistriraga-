@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.proyecto.repository.UsuarioTipoRepository;
 import com.proyecto.security.JwtUtil;
 import com.proyecto.service.CustomUserService;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

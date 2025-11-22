@@ -25,14 +25,14 @@ public class Cliente {
 	private Integer id;
 	
 	@NotBlank(message = "el nombre es obligatorio")
-	@Size(min = 2, max = 20, message = "Maximo 20 caracteres")
+	@Size(min = 2, max = 100, message = "Maximo 20 caracteres")
 	private String nombre;
 	
 	@NotBlank(message = "El correo es obligatorio")
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
+	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
 	private String correo;
 	
-
+	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
 	private String celular;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

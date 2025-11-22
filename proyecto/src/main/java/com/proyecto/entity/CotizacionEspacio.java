@@ -32,7 +32,8 @@ public class CotizacionEspacio {
 	@JoinColumn(name = "espacio", referencedColumnName ="id")
 	private Espacio espacio;
 	
-	private String precio;
+	@NotNull (message= "precio de factor es obligatoria")
+	private Double precio;
 	
 	private String estado;
 	

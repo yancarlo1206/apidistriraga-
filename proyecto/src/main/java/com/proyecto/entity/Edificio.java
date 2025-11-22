@@ -25,20 +25,20 @@ public class Edificio {
 	private Integer id;
 	
 	@NotBlank(message = "El Nombre es obligatorio")
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
+	@Size(min = 2, max = 50, message = "Maximo 30 caracteres")
 	private String nombre;
 	
 	@NotBlank(message = "la direccion es obligatoria")
-	@Size(min = 2, max = 20, message = "Maximo 20 caracteres")
+	@Size(min = 2, max = 100, message = "Maximo 20 caracteres")
 	private String direccion;
 	
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
+	@Size(min = 2, max = 50, message = "Maximo 30 caracteres")
 	private String ciudad;
 	
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
+	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
 	private String ubicacion;
 	
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
+	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
 	private String administrador;
 	
 	@NotNull
@@ -48,7 +48,7 @@ public class Edificio {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDateTime fecha;
 	
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
+	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
 	private String observacion;
 	
 	

@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -39,14 +40,15 @@ public class Cotizacion {
 	private Apartamento apartamento;
 	
 	@NotNull(message = "El precio es obligatorio")
-	private Integer precio;
+	private Double precio;
 	
 	@NotNull(message = "debe haber referencia del tipo de cotizacion en este campo")
 	@ManyToOne
 	@JoinColumn(name = "tipo", referencedColumnName ="id")
 	private CotizacionTipo tipo;
 	
-	private Integer observacion;
+	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
+	private String observacion;
 
     @NotNull(message = "debe haber referencia del estado de cotizacion en este campo")
     @ManyToOne

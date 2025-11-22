@@ -27,7 +27,7 @@ public class Apartamento {
 	private String nombre;
 	
 	@NotNull(message = "Edificio no puede estar vacia")
-	private Integer precio;
+	private Double precio;
 	
 	@NotNull(message = "Edificio no puede estar vacia")
 	@ManyToOne
@@ -35,7 +35,7 @@ public class Apartamento {
 	private Edificio edificio;
 	
 	
-	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
+	@Size(min = 2, max = 100, message = "Maximo 30 caracteres")
 	private String observacion;
 	
 	

@@ -31,21 +31,20 @@ public class Espacio {
 	@Size(min = 2, max = 30, message = "Maximo 30 caracteres")
 	private String nombre;
 	
-	
-	@Size(min = 0, max = 30, message = "Maximo 30 caracteres")
+	@Size(min = 0, max = 100, message = "Maximo 30 caracteres")
 	private String observacion;
 	
 	@NotNull(message = "medidas de alto es obligatoria")
-	private Integer alto;
+	private Double alto;
 	
 	@NotNull(message = "medidas de ancho es obligatoria")
-	private Integer ancho;
+	private Double ancho;
 	
 	@NotNull(message = "medidas de factor es obligatoria")
-	private Integer factor;
+	private Double factor;
 	
 	@NotNull (message= "medidas de factor es obligatoria")
-	private Integer precio;
+	private Double precio;
 	
 	private Integer estado;
 }
