@@ -121,13 +121,14 @@ public class ServicioTipoController {
 		}
 
 		@DeleteMapping("/{id}")
-		public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+		public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
 
 			boolean eliminado =servicioTipoService.eliminar(id);
 			if (eliminado) {
-				return ResponseEntity.ok("Tipo de servicio con ID:" + id + " eliminado correctamente");
+				return ResponseEntity.ok(new Responses<>("Servicio eliminado.", HttpStatus.OK.value(), null));
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tipo de servicio con ID:" + id + "no encontrado");
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+						new Responses<>("Servicio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 			}
 
 		}

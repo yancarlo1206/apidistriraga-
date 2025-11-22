@@ -120,13 +120,14 @@ public class CotizacionController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+	public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
 
 		boolean eliminado = cotizacionService.eliminar(id);
 		if (eliminado) {
-			return ResponseEntity.ok("cotizacion con ID:" + id + " eliminado correctamente");
+			return ResponseEntity.ok(new Responses<>("Cotización eliminada.", HttpStatus.OK.value(), null));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("cotizacion con ID:" + id + "no encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new Responses<>("Cotización no encontrada.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
 	}

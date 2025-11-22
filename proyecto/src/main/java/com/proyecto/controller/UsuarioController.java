@@ -119,13 +119,14 @@ public class UsuarioController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+	public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
 
 		boolean eliminado = usuarioService.eliminar(id);
 		if (eliminado) {
-			return ResponseEntity.ok("usuario con ID:" + id + " eliminado correctamente");
+			return ResponseEntity.ok(new Responses<>("Usuario eliminado.", HttpStatus.OK.value(), null));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuario con ID:" + id + "no encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new Responses<>("Usuario no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
 	}

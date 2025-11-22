@@ -34,7 +34,6 @@ public class Apartamento {
 	@NotNull(message = "Edificio no puede estar vacia")
 	@ManyToOne
 	@JoinColumn(name = "edificio", referencedColumnName ="id")
-	@JsonIgnore
 	private Edificio edificio;
 	
 	

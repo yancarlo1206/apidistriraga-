@@ -121,13 +121,14 @@ public class EspacioController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+	public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
 
 		boolean eliminado = espacioService.eliminar(id);
 		if (eliminado) {
-			return ResponseEntity.ok("espacio con ID:" + id + " eliminado correctamente");
+			return ResponseEntity.ok(new Responses<>("Espacio eliminado.", HttpStatus.OK.value(), null));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("espacio con ID:" + id + "no encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new Responses<>("Espacio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
 	}

@@ -120,13 +120,14 @@ public class CotizacionEspacioController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+	public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
 
 		boolean eliminado = cotizacionEspacioService.eliminar(id);
 		if (eliminado) {
-			return ResponseEntity.ok("cotizacion espacio con ID:" + id + " eliminado correctamente");
+			return ResponseEntity.ok(new Responses<>("Registro eliminado.", HttpStatus.OK.value(), null));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("cotizacion espacio con ID:" + id + "no encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new Responses<>("Registro no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
 	}

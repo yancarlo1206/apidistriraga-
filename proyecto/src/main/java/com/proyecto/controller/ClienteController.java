@@ -122,13 +122,14 @@ public class ClienteController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> eliminar(@PathVariable Integer id) {
+	public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
 
 		boolean eliminado = clienteService.eliminar(id);
 		if (eliminado) {
-			return ResponseEntity.ok("cliente con ID:" + id + " eliminado correctamente");
+			return ResponseEntity.ok(new Responses<>("Cliente eliminado.", HttpStatus.OK.value(), null));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("cliente con ID:" + id + "no encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new Responses<>("Cliente no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
 	}
