@@ -39,7 +39,7 @@ public class CotizacionController {
 		try {
 			Cotizacion creado = cotizacionService.insertar(request);
 			return ResponseEntity.ok(new Responses<>("Cotizacion creada correctamente", HttpStatus.OK.value(), creado));
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 
 			return ResponseEntity.badRequest()
 					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
@@ -92,7 +92,6 @@ public class CotizacionController {
 	}
 
 	@PutMapping("/{id}")
-
 	public ResponseEntity<Responses<?>> actualizar(@PathVariable Integer id, @Valid @RequestBody Cotizacion request,
 			BindingResult bindingResult)
 
@@ -103,8 +102,9 @@ public class CotizacionController {
 			return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
 		}
 
-		Cotizacion cotizacion = cotizacionService.guardar(id, request);
+		
 		try {
+			Cotizacion cotizacion = cotizacionService.guardar(id, request);
 			String mensage;
 			if (cotizacion != null) {
 				mensage = ("cotizacion actualizada");
@@ -114,7 +114,7 @@ public class CotizacionController {
 
 			return ResponseEntity.ok(new Responses<>(mensage, HttpStatus.OK.value(), cotizacion));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			return ResponseEntity.badRequest()
 					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
 		}
 	}
