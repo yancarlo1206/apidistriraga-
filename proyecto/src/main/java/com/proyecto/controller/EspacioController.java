@@ -1,6 +1,8 @@
 package com.proyecto.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -132,5 +134,27 @@ public class EspacioController {
 					.body(new Responses<>("Espacio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
+	}
+
+	@GetMapping("/precio/{edificio}/{apartamento}")
+	public ResponseEntity<Responses<?>> obtenerNombreYPrecio(@PathVariable String edificio,	@PathVariable String apartamento) {
+		try {
+			List<Object[]> datos = espacioService.obtenerNombreYPrecioPorNombres(edificio, apartamento);
+
+			List<Map<String, Object>> lista = datos.stream().map(obj -> {
+				Map<String, Object> map = new HashMap<>();
+				map.put("nombre", obj[0]);
+				map.put("precio", obj[1]);
+				return map;
+			}).toList();
+
+			String mensaje = lista.isEmpty() ? "No hay espacios con ese edificio y apartamento." : "Datos encontrados.";
+
+			return ResponseEntity.ok(new Responses<>(mensaje, HttpStatus.OK.value(), lista));
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
+		}
 	}
 }

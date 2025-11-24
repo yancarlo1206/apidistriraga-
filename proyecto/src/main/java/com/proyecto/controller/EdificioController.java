@@ -1,6 +1,7 @@
 package com.proyecto.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,113 +22,131 @@ import com.proyecto.response.Responses;
 import com.proyecto.service.EdificioService;
 
 import jakarta.validation.Valid;
-@CrossOrigin(origins="http://localhost:3000")
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/edificio")
 public class EdificioController {
-	
-	 @Autowired
-	 private EdificioService edificioService;
-	 @PostMapping
-		public ResponseEntity<Responses<?>> guardar(@Valid @RequestBody Edificio request, BindingResult bindingResult) {
-			if (bindingResult.hasErrors()) {
-				String errorMsg = bindingResult.getFieldError().getDefaultMessage();
-				return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
-			}
 
-			try {
-				Edificio creado = edificioService.insertar(request);
-				return ResponseEntity.ok(new Responses<>("Edificio creado correctamente", HttpStatus.OK.value(), creado));
-			} catch (Exception e) {
+	@Autowired
+	private EdificioService edificioService;
 
-				return ResponseEntity.badRequest()
-						.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
-			}
+	@PostMapping
+	public ResponseEntity<Responses<?>> guardar(@Valid @RequestBody Edificio request, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			String errorMsg = bindingResult.getFieldError().getDefaultMessage();
+			return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
 		}
 
-		@GetMapping("{id}")
+		try {
+			Edificio creado = edificioService.insertar(request);
+			return ResponseEntity.ok(new Responses<>("Edificio creado correctamente", HttpStatus.OK.value(), creado));
+		} catch (Exception e) {
 
-		public ResponseEntity<Responses<?>> get(@PathVariable Integer id) {
-
-			try {
-				String mensage;
-				Edificio edificio = edificioService.listarUno(id);
-				if (edificio != null) {
-					mensage = ("el edificio: " + id);
-
-				} else {
-					mensage = ("edificio con id:" + id + "no encontrado");
-				}
-				return ResponseEntity.ok(new Responses<>(mensage, HttpStatus.OK.value(), edificio));
-
-			} catch (Exception e) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
-			}
-
+			return ResponseEntity.badRequest()
+					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
 		}
+	}
 
-		@GetMapping
-		public ResponseEntity<Responses<?>> listar() {
+	@GetMapping("{id}")
 
+	public ResponseEntity<Responses<?>> get(@PathVariable Integer id) {
+
+		try {
 			String mensage;
+			Edificio edificio = edificioService.listarUno(id);
+			if (edificio != null) {
+				mensage = ("el edificio: " + id);
 
-			try {
-
-				List<Edificio> edificio =edificioService.listar();
-
-				if (!edificio.isEmpty()) {
-					mensage = ("lista de edificio");
-				} else {
-					mensage = ("No hay edificios creados.");
-				}
-
-				return ResponseEntity.ok(new Responses<>(mensage, HttpStatus.OK.value(), edificio));
-
-			} catch (Exception e) {
-				return ResponseEntity.badRequest()
-						.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
-			}
-		}
-
-		@PutMapping("/{id}")
-
-		public ResponseEntity<Responses<?>> actualizar(@PathVariable Integer id, @Valid @RequestBody Edificio request,
-				BindingResult bindingResult)
-
-		{
-			if (bindingResult.hasErrors()) {
-
-				String errorMsg = bindingResult.getFieldError().getDefaultMessage();
-				return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
-			}
-
-			Edificio edificio = edificioService.guardar(id, request);
-			try {
-				String mensage;
-				if (edificio != null) {
-					mensage = ("edificio actualizado");
-				} else {
-					mensage = ("edificio con ID:" + id + " No encontrado.");
-				}
-
-				return ResponseEntity.ok(new Responses<>(mensage, HttpStatus.OK.value(), edificio));
-			} catch (Exception e) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
-			}
-		}
-
-		@DeleteMapping("/{id}")
-		public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
-
-			boolean eliminado = edificioService.eliminar(id);
-			if (eliminado) {
-				return ResponseEntity.ok(new Responses<>("Edificio eliminado.", HttpStatus.OK.value(), null));
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-						new Responses<>("Edificio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
+				mensage = ("edificio con id:" + id + "no encontrado");
+			}
+			return ResponseEntity.ok(new Responses<>(mensage, HttpStatus.OK.value(), edificio));
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
+		}
+
+	}
+
+	@GetMapping
+	public ResponseEntity<Responses<?>> listar() {
+
+		String mensage;
+
+		try {
+
+			List<Edificio> edificio = edificioService.listar();
+
+			if (!edificio.isEmpty()) {
+				mensage = ("lista de edificio");
+			} else {
+				mensage = ("No hay edificios creados.");
 			}
 
+			return ResponseEntity.ok(new Responses<>(mensage, HttpStatus.OK.value(), edificio));
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
 		}
+	}
+
+	@PutMapping("/{id}")
+
+	public ResponseEntity<Responses<?>> actualizar(@PathVariable Integer id, @Valid @RequestBody Edificio request,
+			BindingResult bindingResult)
+
+	{
+		if (bindingResult.hasErrors()) {
+
+			String errorMsg = bindingResult.getFieldError().getDefaultMessage();
+			return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
+		}
+
+		Edificio edificio = edificioService.guardar(id, request);
+		try {
+			String mensage;
+			if (edificio != null) {
+				mensage = ("edificio actualizado");
+			} else {
+				mensage = ("edificio con ID:" + id + " No encontrado.");
+			}
+
+			return ResponseEntity.ok(new Responses<>(mensage, HttpStatus.OK.value(), edificio));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Responses<?>> eliminar(@PathVariable Integer id) {
+
+		boolean eliminado = edificioService.eliminar(id);
+		if (eliminado) {
+			return ResponseEntity.ok(new Responses<>("Edificio eliminado.", HttpStatus.OK.value(), null));
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Responses<>("Edificio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
+		}
+
+	}
+
+	@GetMapping("/listNombres")
+	public ResponseEntity<Responses<?>> listarEdificiosConApartamentos() {
+		try {
+			Map<String, List<String>> datos = edificioService.listarEdificiosConApartamentos();
+
+			String mensaje = datos.isEmpty() ? "No hay edificios creados." : "Lista de edificios con sus apartamentos.";
+
+			return ResponseEntity.ok(new Responses<>(mensaje, HttpStatus.OK.value(), datos));
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
+		}
+	}
+
 }

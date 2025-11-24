@@ -1,13 +1,17 @@
 package com.proyecto.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.proyecto.entity.Apartamento;
 import com.proyecto.entity.Edificio;
 import com.proyecto.repository.EdificioRepository;
 import com.proyecto.service.UsuarioService.ResourceNotFoundException;
@@ -90,4 +94,19 @@ public class EdificioService {
 
 		return edificio.getNombre();
 	}
+	
+	public Map<String, List<String>> listarEdificiosConApartamentos() {
+        List<Edificio> edificios = edificioRepository.findAllWithApartamentos();
+
+        Map<String, List<String>> resultado = new HashMap<>();
+        for (Edificio edificio : edificios) {
+            List<String> nombresApartamentos = new ArrayList<>();
+            for (Apartamento apto : edificio.getApartamentos()) {
+                nombresApartamentos.add(apto.getNombre());
+            }
+            resultado.put(edificio.getNombre(), nombresApartamentos);
+        }
+
+        return resultado;
+    }
 }
