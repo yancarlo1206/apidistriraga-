@@ -94,4 +94,8 @@ public class EspacioService {
 		return false;
 	}
 
+	public List<Object[]> obtenerNombreYPrecioPorNombres(String nombreEdificio, String nombreApartamento) {
+		return espacioRepository.obtenerNombreYPrecioPorNombres(nombreEdificio, nombreApartamento);
+	}
+
 }
