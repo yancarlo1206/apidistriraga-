@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,15 +21,16 @@ import com.proyecto.service.CotizacionEspacioService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("api/cotizacionEspacio")
 public class CotizacionEspacioController {
 
 	@Autowired
-	private CotizacionEspacioService cotizacionEspacioService;	
+	private CotizacionEspacioService cotizacionEspacioService;
+
 	@PostMapping
-	public ResponseEntity<Responses<?>> guardar(@Valid @RequestBody CotizacionEspacio request, BindingResult bindingResult) {
+	public ResponseEntity<Responses<?>> guardar(@Valid @RequestBody CotizacionEspacio request,
+			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			String errorMsg = bindingResult.getFieldError().getDefaultMessage();
 			return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
@@ -75,7 +75,7 @@ public class CotizacionEspacioController {
 
 		try {
 
-			List<CotizacionEspacio> cotizacion =cotizacionEspacioService.listar();
+			List<CotizacionEspacio> cotizacion = cotizacionEspacioService.listar();
 
 			if (!cotizacion.isEmpty()) {
 				mensage = ("lista de cotizacion espacios");
@@ -93,7 +93,8 @@ public class CotizacionEspacioController {
 
 	@PutMapping("/{id}")
 
-	public ResponseEntity<Responses<?>> actualizar(@PathVariable Integer id, @Valid @RequestBody CotizacionEspacio request,
+	public ResponseEntity<Responses<?>> actualizar(@PathVariable Integer id,
+			@Valid @RequestBody CotizacionEspacio request,
 			BindingResult bindingResult)
 
 	{

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +21,13 @@ import com.proyecto.service.CotizacionService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("api/cotizacion")
 public class CotizacionController {
-	
+
 	@Autowired
 	private CotizacionService cotizacionService;
+
 	@PostMapping
 	public ResponseEntity<Responses<?>> guardar(@Valid @RequestBody Cotizacion request, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -75,7 +74,7 @@ public class CotizacionController {
 
 		try {
 
-			List<Cotizacion> cotizacion =cotizacionService.listar();
+			List<Cotizacion> cotizacion = cotizacionService.listar();
 
 			if (!cotizacion.isEmpty()) {
 				mensage = ("lista de cotizaciones");
@@ -102,7 +101,6 @@ public class CotizacionController {
 			return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
 		}
 
-		
 		try {
 			Cotizacion cotizacion = cotizacionService.guardar(id, request);
 			String mensage;

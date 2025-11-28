@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +20,7 @@ import com.proyecto.response.Responses;
 import com.proyecto.service.UsuarioService;
 
 import jakarta.validation.Valid;
-@CrossOrigin(origins="http://localhost:3000")
+
 @RestController
 @RequestMapping("api/usuario")
 public class UsuarioController {
@@ -74,7 +73,7 @@ public class UsuarioController {
 
 		try {
 
-			List<Usuario> usuario =usuarioService.listar();
+			List<Usuario> usuario = usuarioService.listar();
 
 			if (!usuario.isEmpty()) {
 				mensage = ("lista de usuarios");
@@ -130,6 +129,5 @@ public class UsuarioController {
 		}
 
 	}
-
 
 }

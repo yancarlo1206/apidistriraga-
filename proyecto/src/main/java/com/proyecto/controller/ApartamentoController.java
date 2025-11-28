@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +27,6 @@ import com.proyecto.service.EdificioService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/apartamento")
 public class ApartamentoController {
@@ -151,17 +149,16 @@ public class ApartamentoController {
 
 	@GetMapping("/listPorEdificio/{edificioId}")
 	public ResponseEntity<Responses<?>> apartamentorPorEdificio(@PathVariable Integer edificioId) {
-		
-		
+
 		try {
 			String nombreEdificio = edificioService.obtenerNombreEdificio(edificioId);
 
 			List<Apartamento> apartamentos = apartamentoRepository.findByEdificioId(edificioId);
 
 			if (apartamentos.isEmpty()) {
-			  return ResponseEntity.ok(new Responses<>("El edificio " + nombreEdificio + " no tiene apartamentos registrados.",
-								HttpStatus.OK.value(), apartamentos 
-			  ));
+				return ResponseEntity
+						.ok(new Responses<>("El edificio " + nombreEdificio + " no tiene apartamentos registrados.",
+								HttpStatus.OK.value(), apartamentos));
 			}
 
 			return ResponseEntity.ok(new Responses<>("Lista de apartamentos del edificio " + nombreEdificio + ".",

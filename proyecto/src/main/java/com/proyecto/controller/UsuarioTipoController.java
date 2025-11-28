@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,13 +20,13 @@ import com.proyecto.response.Responses;
 import com.proyecto.service.UsuarioTipoService;
 
 import jakarta.validation.Valid;
-@CrossOrigin(origins="http://localhost:3000")
+
 @RestController
 @RequestMapping("api/usuarioTipo")
 public class UsuarioTipoController {
 	@Autowired
 	private UsuarioTipoService usuarioTipoService;
-	
+
 	@PostMapping
 	public ResponseEntity<Responses<?>> guardar(@Valid @RequestBody UsuarioTipo request, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -37,7 +36,8 @@ public class UsuarioTipoController {
 
 		try {
 			UsuarioTipo creado = usuarioTipoService.insertar(request);
-			return ResponseEntity.ok(new Responses<>("tipo de usuario creado correctamente", HttpStatus.OK.value(), creado));
+			return ResponseEntity
+					.ok(new Responses<>("tipo de usuario creado correctamente", HttpStatus.OK.value(), creado));
 		} catch (Exception e) {
 
 			return ResponseEntity.badRequest()
@@ -74,7 +74,7 @@ public class UsuarioTipoController {
 
 		try {
 
-			List<UsuarioTipo> usuarioTipo =usuarioTipoService.listar();
+			List<UsuarioTipo> usuarioTipo = usuarioTipoService.listar();
 
 			if (!usuarioTipo.isEmpty()) {
 				mensage = ("tipo de usuarios listados");

@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,6 @@ import com.proyecto.security.JwtUtil;
 import com.proyecto.service.AuthService;
 import com.proyecto.service.CustomUserService;
 
-@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -40,13 +38,12 @@ public class AuthController {
 
     @Autowired
     private UsuarioRepository userRepository;
-    
+
     @Autowired
     private UsuarioTipoRepository usuarioTipoRepository;
-    
+
     @Autowired
     private AuthService authService;
-    
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
@@ -58,7 +55,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
     }
-   
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
@@ -68,5 +65,5 @@ public class AuthController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+
 }
