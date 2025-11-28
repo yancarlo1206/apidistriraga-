@@ -1,6 +1,7 @@
 package com.proyecto.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -125,9 +126,25 @@ public class EdificioController {
 		if (eliminado) {
 			return ResponseEntity.ok(new Responses<>("Edificio eliminado.", HttpStatus.OK.value(), null));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-					new Responses<>("Edificio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Responses<>("Edificio no encontrado para eliminar.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
 	}
+
+	@GetMapping("/listNombres")
+	public ResponseEntity<Responses<?>> listarEdificiosConApartamentos() {
+		try {
+			Map<String, List<String>> datos = edificioService.listarEdificiosConApartamentos();
+
+			String mensaje = datos.isEmpty() ? "No hay edificios creados." : "Lista de edificios con sus apartamentos.";
+
+			return ResponseEntity.ok(new Responses<>(mensaje, HttpStatus.OK.value(), datos));
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.body(new Responses<>(e.getMessage(), HttpStatus.NOT_FOUND.value(), null));
+		}
+	}
+
 }

@@ -36,6 +36,7 @@ public class Cliente {
 	private String celular;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
 	private LocalDateTime fecha;
 	
 	private Integer estado;
