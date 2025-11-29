@@ -1,6 +1,7 @@
 package com.proyecto.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,6 @@ public interface EspacioRepository extends JpaRepository<Espacio, Integer> {
 			""")
 	List<Object[]> obtenerNombreYPrecioPorNombres(@Param("nombreEdificio") String nombreEdificio,
 			@Param("nombreApartamento") String nombreApartamento);
+	
+	Optional<Espacio> findByNombre(String nombre);
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto.dto.CotizacionChatDTO;
 import com.proyecto.entity.Cotizacion;
 import com.proyecto.response.Responses;
 import com.proyecto.service.CotizacionService;
@@ -124,10 +125,27 @@ public class CotizacionController {
 		if (eliminado) {
 			return ResponseEntity.ok(new Responses<>("Cotización eliminada.", HttpStatus.OK.value(), null));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-					new Responses<>("Cotización no encontrada.", HttpStatus.NOT_FOUND.value(), null));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new Responses<>("Cotización no encontrada.", HttpStatus.NOT_FOUND.value(), null));
 		}
 
+	}
+
+	@PostMapping("/cotizacionChat")
+	public ResponseEntity<Responses<?>> guardarChat(@Valid @RequestBody CotizacionChatDTO request,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			String errorMsg = bindingResult.getFieldError().getDefaultMessage();
+			return ResponseEntity.badRequest().body(new Responses<>(errorMsg, HttpStatus.BAD_REQUEST.value(), null));
+		}
+
+		try {
+			Cotizacion creado = cotizacionService.insertarChat(request);
+			return ResponseEntity.ok(new Responses<>("Cotización creada correctamente", HttpStatus.OK.value(), creado));
+		} catch (RuntimeException e) {
+			return ResponseEntity.badRequest()
+					.body(new Responses<>(e.getMessage(), HttpStatus.BAD_REQUEST.value(), null));
+		}
 	}
 
 }
