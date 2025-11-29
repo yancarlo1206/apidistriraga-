@@ -16,6 +16,7 @@ public class CotizacionEstadoService {
 	
 	@Autowired
 	private CotizacionEstadoRepository cotizacionEstadoRepository;
+	
 	public CotizacionEstado insertar(CotizacionEstado request) {
 
 		CotizacionEstado nuevo = new CotizacionEstado();
